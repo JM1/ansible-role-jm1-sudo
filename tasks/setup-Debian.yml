@@ -1,0 +1,22 @@
+---
+- user:
+    name: "{{ username }}"
+    password: "{{ password }}"
+    groups:
+    - audio 
+    - video
+    system: "{{ system }}"
+
+- apt:
+    name: sudo
+  when: admin
+
+- shell: |
+    echo "{{ username }} ALL=(ALL:ALL) NOPASSWD:ALL" > "/etc/sudoers.d/admin-{{ username }}"
+    chmod 440 "/etc/sudoers.d/admin-{{ username }}"
+    chown root:root "/etc/sudoers.d/admin-{{ username }}"
+  when: admin
+
+- shell: passwd -d "{{ username }}"
+
+
