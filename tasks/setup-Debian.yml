@@ -1,4 +1,28 @@
 ---
+- set_fact:
+    username: "{{ __username|list }}"
+  when: username|default(None) == None
+
+- set_fact:
+    password: "{{ __password|list }}"
+  when: password|default(None) == None
+
+- set_fact:
+    admin: "{{ __admin|list }}"
+  when: admin|default(None) == None
+
+- set_fact:
+    system: "{{ __system|list }}"
+  when: system|default(None) == None
+
+- set_fact:
+    uid: "{{ __uid }}"
+  when: uid|default(None) == None
+
+- set_fact:
+    shell: "{{ __shell }}"
+  when: shell|default(None) == None
+
 - user:
     name: "{{ username }}"
     password: "{{ password }}"
@@ -6,12 +30,15 @@
     - audio 
     - video
     system: "{{ system }}"
+    uid: "{{ uid }}"
+    shell: "{{ shell }}"
 
 - apt:
     name: sudo
   when: admin
 
 - shell: |
+    set -e
     echo "{{ username }} ALL=(ALL:ALL) NOPASSWD:ALL" > "/etc/sudoers.d/admin-{{ username }}"
     chmod 440 "/etc/sudoers.d/admin-{{ username }}"
     chown root:root "/etc/sudoers.d/admin-{{ username }}"
@@ -19,4 +46,10 @@
 
 - shell: passwd -d "{{ username }}"
 
-
+- set_fact:
+    username: !!null
+    password: !!null
+    admin: !!null
+    system: !!null
+    uid: !!null
+    shell: !!null
