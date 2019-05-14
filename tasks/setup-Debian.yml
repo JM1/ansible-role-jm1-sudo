@@ -4,52 +4,21 @@
   when: username|default(None) == None
 
 - set_fact:
-    password: "{{ __password|list }}"
-  when: password|default(None) == None
-
-- set_fact:
-    admin: "{{ __admin|list }}"
-  when: admin|default(None) == None
-
-- set_fact:
-    system: "{{ __system|list }}"
-  when: system|default(None) == None
-
-- set_fact:
-    uid: "{{ __uid }}"
-  when: uid|default(None) == None
-
-- set_fact:
-    shell: "{{ __shell }}"
-  when: shell|default(None) == None
-
-- user:
-    name: "{{ username }}"
-    password: "{{ password }}"
-    groups:
-    - audio 
-    - video
-    system: "{{ system }}"
-    uid: "{{ uid }}"
-    shell: "{{ shell }}"
+    nopassword: "{{ __nopassword }}"
+  when: nopassword|default(None) == None
 
 - apt:
     name: sudo
-  when: admin
 
-- shell: |
-    set -e
-    echo "{{ username }} ALL=(ALL:ALL) NOPASSWD:ALL" > "/etc/sudoers.d/admin-{{ username }}"
-    chmod 440 "/etc/sudoers.d/admin-{{ username }}"
-    chown root:root "/etc/sudoers.d/admin-{{ username }}"
-  when: admin
-
-- shell: passwd -d "{{ username }}"
+- template:
+    src: "{{ distribution_codename }}/etc/sudoers.d/username-nopassword-all.j2"
+    dest: /etc/sudoers.d/ansible-{{ username }}"
+    mode: 440
+    owner: root
+    group: root
+  when: nopassword is defined and nopassword
 
 - set_fact:
     username: !!null
-    password: !!null
-    admin: !!null
-    system: !!null
-    uid: !!null
-    shell: !!null
+    nopassword: !!null
+

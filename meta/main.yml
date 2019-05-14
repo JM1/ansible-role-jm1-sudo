@@ -1,7 +1,7 @@
 galaxy_info:
-  role_name: container_user
+  role_name: sudo
   author: Jakob Meng
-  description: setup a user within a container
+  description: manage sudo configuration
   company: Hochschule Bonn-Rhein-Sieg
   license: license (GPLv3)
 

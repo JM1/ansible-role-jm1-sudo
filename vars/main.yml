@@ -1,12 +1,4 @@
 ---
 __username: !!null
 
-__password: "{{ 'my_password' | password_hash('sha512', 'my_salt') }}"
-
-__admin: yes
-
-__system: yes
-
-__uid: !!null
-
-__shell: !!null
+__nopassword: no
