@@ -7,6 +7,11 @@
     nopassword: "{{ __nopassword }}"
   when: nopassword|default(None) == None
 
+- name: Fail if required vars are not set
+  fail:
+  when: >
+    username == None or username|length == 0
+
 - apt:
     name: sudo
 
