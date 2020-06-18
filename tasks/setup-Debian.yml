@@ -21,7 +21,7 @@
     name: sudo
 
 - template:
-    src: "{{ distribution_codename }}/etc/sudoers.d/username-nopassword-all.j2"
+    src: "{{ ansible_distribution }}-{{ ansible_distribution_version }}/etc/sudoers.d/username-nopassword-all.j2"
     dest: /etc/sudoers.d/ansible-{{ username }}"
     mode: 440
     owner: root
