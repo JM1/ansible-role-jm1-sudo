@@ -7,6 +7,11 @@
     nopassword: "{{ __nopassword }}"
   when: nopassword|default(None) == None
 
+- name: Cleanup role default variables
+  set_fact:
+    __username: !!null
+    __nopassword: !!null
+
 - name: Fail if required vars are not set
   fail:
   when: >
