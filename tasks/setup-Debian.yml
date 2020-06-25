@@ -1,12 +1,4 @@
 ---
-- set_fact:
-    username: "{{ __username|list }}"
-  when: username|default(None) == None
-
-- set_fact:
-    nopassword: "{{ __nopassword }}"
-  when: nopassword|default(None) == None
-
 - name: Fail if required vars are not set
   fail:
   when: >
@@ -16,14 +8,9 @@
     name: sudo
 
 - template:
-    src: "{{ ansible_distribution }}-{{ ansible_distribution_version }}/etc/sudoers.d/username-nopassword-all.j2"
+    src: "{{ distribution_id|join('-') }}/etc/sudoers.d/username-nopassword-all.j2"
     dest: /etc/sudoers.d/ansible-{{ username }}"
     mode: 440
     owner: root
     group: root
   when: nopassword is defined and nopassword
-
-- set_fact:
-    username: !!null
-    nopassword: !!null
-
